@@ -1,6 +1,6 @@
 [![GoDoc](https://godoc.org/github.com/penkovski/graceful?status.svg)](https://pkg.go.dev/github.com/penkovski/graceful)
 [![Go Report Card](https://goreportcard.com/badge/github.com/penkovski/graceful)](https://goreportcard.com/report/github.com/penkovski/graceful)
-
+[![Test](https://github.com/penkovski/graceful/actions/workflows/go.yml/badge.svg)](https://github.com/penkovski/graceful/actions/workflows/go.yml)
 
 # graceful
 Graceful shutdown for HTTP servers with Go 1.8+
