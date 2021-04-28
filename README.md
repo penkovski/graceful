@@ -13,7 +13,9 @@ I don't need it currently.
 
 ### Installation
 
-`go get -u github.com/penkovski/graceful`
+```shell
+go get -u github.com/penkovski/graceful
+```
 
 Note that you should use Go 1.8+
 
