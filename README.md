@@ -19,8 +19,8 @@ go get -u github.com/penkovski/graceful
 
 Note that you should use Go 1.8+
 
-> You can also just copy the `graceful.Shutdown` function in your project 
-> and not depend on this repo.
+> You can also just copy the `graceful.Start` or `graceful.StartCtx` functions 
+> in your project and not depend on this repo.
 
 ### Usage
 
@@ -41,8 +41,48 @@ func main() {
 		Handler: http.HandlerFunc(hello),
 	}
 
-	if err := graceful.Shutdown(srv, 10 * time.Second); err != nil {
+	if err := graceful.Start(srv, 10*time.Second); err != nil {
 		log.Println(err)
+	}
+}
+
+func hello(w http.ResponseWriter, r *http.Request) {
+	time.Sleep(5 * time.Second)
+	_, _ = w.Write([]byte("hello"))
+}
+```
+
+### Usage with `errgroup` and Context
+
+```go
+package main
+
+import (
+	"errors"
+	"log"
+	"net/http"
+	"time"
+
+	"github.com/penkovski/graceful"
+	"golang.org/x/sync/errgroup"
+)
+
+func main() {
+	srv := &http.Server{
+		Addr:    ":8080",
+		Handler: http.HandlerFunc(hello),
+	}
+
+	g, ctx := errgroup.WithContext(context.Background())
+	g.Go(func() error {
+		if err := graceful.StartCtx(ctx, srv, 10*time.Second); err != nil {
+			log.Println("server shutdown error:", err)
+			return err
+		}
+		return errors.New("server stopped successfully")
+	})
+	if err := g.Wait(); err != nil {
+		log.Println("errgroup stopped:", err)
 	}
 }
 

@@ -14,7 +14,7 @@ func main() {
 		Handler: http.HandlerFunc(hello),
 	}
 
-	if err := graceful.Shutdown(srv, 10*time.Second); err != nil {
+	if err := graceful.Start(srv, 10*time.Second); err != nil {
 		log.Println(err)
 	}
 }
